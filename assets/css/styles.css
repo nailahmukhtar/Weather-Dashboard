@@ -1,0 +1,33 @@
+/* .row {
+    border: solid orange 1px;
+}
+
+.container-fluid {
+    border: solid green 1px;
+    width: 100%;
+}
+
+.list-group {
+    border: solid blue 1px;
+
+} */
+
+#today {
+    border: solid gray 2px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.card {
+    margin: 10px;
+    
+}
+
+.card-body {
+    background-color: lightslategray;
+
+}
+
+.search-button {
+    background-color: skyblue;
+}
