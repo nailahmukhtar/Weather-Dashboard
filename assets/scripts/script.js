@@ -72,16 +72,25 @@ $.ajax({
 
         for (let k = 0; k < fiveDayArray.length; k++) {
             var the_date = moment(fiveDayArray[k][0].dt_txt).format("DD-MM-YYYY");
-            var temp = fiveDayArray[k][0].main.temp - 273.15;
+            var temp = (fiveDayArray[k][0].main.temp - 273.15).toFixed(0);
             var wind = fiveDayArray[k][0].wind.speed;
             var humidity = fiveDayArray[k][0].main.humidity;
             var cardId = $('.card')[k].dataset.day;
             var cardTitle = $('.card[data-day=' + cardId + '] > .card-body > .card-title');
-            
+            var cardIcon = $('.card[data-day=' + cardId + '] > .card-body > .card-icon');
+            var cardTemp = $('.card[data-day=' + cardId + '] > .card-body > .card-temp');
+            var cardWind = $('.card[data-day=' + cardId + '] > .card-body > .card-wind');
+            var cardHumidity = $('.card[data-day=' + cardId + '] > .card-body > .card-humidity');
+
             console.log(cardTitle);
+            console.log(cardTemp);
 
             if( cardId == [k]) {
                 cardTitle.text(the_date);
+                // icon here
+                cardTemp.text("Temp: " + temp + "°C");
+                cardWind.text("Wind: " + wind + "KPH");
+                cardHumidity.text("Humidity: " + humidity + "%");
             }
         }
     });
