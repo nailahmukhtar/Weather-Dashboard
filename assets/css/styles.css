@@ -31,3 +31,9 @@
 .search-button {
     background-color: skyblue;
 }
+
+img {
+    height: 70px;
+    margin: -15px;
+    padding: 10px;
+}

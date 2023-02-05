@@ -9,8 +9,15 @@ var fiveDayArray = [];
 
 
 $("#search-button").click(function(event) {
-    fiveDayArray = [];
     event.preventDefault();
+    fiveDayArray = [];
+
+    cardTitle.text("");
+    cardIcon.attr("src", "")
+    cardTemp.text("");
+    cardWind.text("");
+    cardHumidity.text("");
+
     city_name = $("#search-input").val();
     console.log(city_name);
     var geocodeURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city_name + "&limit=1&appid=" + apiKey;
@@ -40,9 +47,9 @@ $.ajax({
         var currentHumidity = data.main.humidity;
         //Writing values to the page
         $("#cityName").text(city_name);
-        $("#currentTemp").text("Temp: " + currentTemp.toFixed(2));
-        $("#currentWind").text("Wind: " + currentWind);
-        $("#currentHumidity").text("Humidity: " + currentHumidity);
+        $("#currentTemp").text("Temp: " + currentTemp.toFixed(0) + "°C");
+        $("#currentWind").text("Wind: " + currentWind + " KPH");
+        $("#currentHumidity").text("Humidity: " + currentHumidity + "%");
 
     });
 
@@ -75,6 +82,7 @@ $.ajax({
             var temp = (fiveDayArray[k][0].main.temp - 273.15).toFixed(0);
             var wind = fiveDayArray[k][0].wind.speed;
             var humidity = fiveDayArray[k][0].main.humidity;
+            var icon = fiveDayArray[k][0].weather[0].icon;
             var cardId = $('.card')[k].dataset.day;
             var cardTitle = $('.card[data-day=' + cardId + '] > .card-body > .card-title');
             var cardIcon = $('.card[data-day=' + cardId + '] > .card-body > .card-icon');
@@ -82,16 +90,12 @@ $.ajax({
             var cardWind = $('.card[data-day=' + cardId + '] > .card-body > .card-wind');
             var cardHumidity = $('.card[data-day=' + cardId + '] > .card-body > .card-humidity');
 
-            console.log(cardTitle);
-            console.log(cardTemp);
+            cardTitle.text(the_date);
+            cardIcon.attr("src", "http://openweathermap.org/img/wn/" + icon + "@2x.png")
+            cardTemp.text("Temp: " + temp + "°C");
+            cardWind.text("Wind: " + wind + " KPH");
+            cardHumidity.text("Humidity: " + humidity + "%");
 
-            if( cardId == [k]) {
-                cardTitle.text(the_date);
-                // icon here
-                cardTemp.text("Temp: " + temp + "°C");
-                cardWind.text("Wind: " + wind + "KPH");
-                cardHumidity.text("Humidity: " + humidity + "%");
-            }
         }
     });
 
