@@ -77,7 +77,7 @@ $.ajax({
             var humidity = fiveDayArray[k][0].main.humidity;
             var cardId = $('.card')[k].dataset.day;
             var cardTitle = $('.card[data-day=' + cardId + '] > .card-body > .card-title');
-
+            
             console.log(cardTitle);
 
             if( cardId == [k]) {
