@@ -7,24 +7,16 @@ var city_lon;
 var futureForecasts = [];
 var fiveDayArray = [];
 
-
+//Search button function
 $("#search-button").click(function(event) {
     event.preventDefault();
-    fiveDayArray = [];
-
-    cardTitle.text("");
-    cardIcon.attr("src", "")
-    cardTemp.text("");
-    cardWind.text("");
-    cardHumidity.text("");
-
+    fiveDayArray.length = 0;
     city_name = $("#search-input").val();
     console.log(city_name);
     var geocodeURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city_name + "&limit=1&appid=" + apiKey;
     apiCall(geocodeURL);
 });
 
-// console.log(city_name);
 
 function apiCall(geocodeURL) {
 //weather city api call for co-ordinates
@@ -42,11 +34,16 @@ $.ajax({
         url: dayQueryURL,
         method: "GET"
     }).then(function(data) {
+        console.log(data);
+        var currentDate = moment.unix(data.dt).format('DD/MM/YYYY');
+        var currentIcon = data.weather[0].icon;
         var currentTemp = data.main.temp - 273.15;
         var currentWind = data.wind.speed;
         var currentHumidity = data.main.humidity;
         //Writing values to the page
-        $("#cityName").text(city_name);
+        $("#cityName").text(city_name + " (" + currentDate + ")");
+        $("#cityName").append("<img class='current-icon'>");
+        $('.current-icon').attr("src","http://openweathermap.org/img/wn/" + currentIcon + "@2x.png");
         $("#currentTemp").text("Temp: " + currentTemp.toFixed(0) + "°C");
         $("#currentWind").text("Wind: " + currentWind + " KPH");
         $("#currentHumidity").text("Humidity: " + currentHumidity + "%");
@@ -74,8 +71,10 @@ $.ajax({
             todayPlusArray.splice(1,todayPlusArray.length);
         
             fiveDayArray.push(todayPlusArray);   
+            console.log(fiveDayArray);
         }   
-        console.log(fiveDayArray);
+        // console.log(fiveDayArray);
+        // console.log(fiveDayQueryURL);
 
         for (let k = 0; k < fiveDayArray.length; k++) {
             var the_date = moment(fiveDayArray[k][0].dt_txt).format("DD-MM-YYYY");
@@ -95,6 +94,9 @@ $.ajax({
             cardTemp.text("Temp: " + temp + "°C");
             cardWind.text("Wind: " + wind + " KPH");
             cardHumidity.text("Humidity: " + humidity + "%");
+
+
+            /// ISSUE: when searching a new place, forecast values won't change on the page
 
         }
     });
