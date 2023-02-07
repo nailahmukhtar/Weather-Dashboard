@@ -36,9 +36,17 @@ function search() {
 $("#search-button").click(function (event) {
   event.preventDefault();
   city_name = $("#search-input").val().trim();
-  city_array.push(city_name);
-  localStorage.setItem("cityArray", JSON.stringify(city_array));
-  search();
+
+  if (city_array.includes(city_name)) {
+    search();
+  } else {
+    city_array.push(city_name);
+    localStorage.setItem("cityArray", JSON.stringify(city_array));
+    search();
+  }
+
+  $("#search-input").val("");
+
 });
 
 function createHistory() {
