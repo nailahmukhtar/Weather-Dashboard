@@ -10,19 +10,19 @@ if (JSON.parse(localStorage.getItem("cityArray")) === null)  {
     var city_array = JSON.parse(localStorage.getItem("cityArray"));
 }
 
-console.log(city_array);
-
 var city_lat;
 var city_lon;
 var futureForecasts = [];
 var fiveDayArray = [];
-
 
 createHistory();
 
 //function that runs a search when called
 function search() {
   fiveDayArray.length = 0;
+  futureForecasts.length = 0;
+
+  console.log(fiveDayArray);
   $('#no-response').css("display","none");
   var geocodeURL =
     "http://api.openweathermap.org/geo/1.0/direct?q=" +
@@ -77,6 +77,8 @@ function apiCall(geocodeURL) {
     method: "GET",
   }).then(function (geoResponse) {
         if (geoResponse.length > 0) {
+            $('section').removeClass('loadDisplay');
+            $('div').removeClass('loadDisplay');
             city_lat = geoResponse[0].lat;
             city_lon = geoResponse[0].lon;
 
@@ -90,26 +92,26 @@ function apiCall(geocodeURL) {
 
             //weather current day api call
             $.ajax({
-            url: dayQueryURL,
-            method: "GET",
+                url: dayQueryURL,
+                method: "GET",
             }).then(function (data) {
-            console.log(data);
-            var currentDate = moment.unix(data.dt).format("DD/MM/YYYY");
-            var currentIcon = data.weather[0].icon;
-            var currentTemp = data.main.temp - 273.15;
-            var currentWind = data.wind.speed;
-            var currentHumidity = data.main.humidity;
-            //Writing values to the page
-            $("#cityName").text(city_name + " (" + currentDate + ")");
-            $("#cityName").append("<img class='current-icon'>");
-            $(".current-icon").attr(
-                "src",
-                "http://openweathermap.org/img/wn/" + currentIcon + "@2x.png"
-            );
-            $("#currentTemp").text("Temp: " + currentTemp.toFixed(0) + "°C");
-            $("#currentWind").text("Wind: " + currentWind + " KPH");
-            $("#currentHumidity").text("Humidity: " + currentHumidity + "%");
-            createHistory();
+                // console.log(data);
+                var currentDate = moment.unix(data.dt).format("DD/MM/YYYY");
+                var currentIcon = data.weather[0].icon;
+                var currentTemp = data.main.temp - 273.15;
+                var currentWind = data.wind.speed;
+                var currentHumidity = data.main.humidity;
+                //Writing values to the page
+                $("#cityName").text(city_name + " (" + currentDate + ")");
+                $("#cityName").append("<img class='current-icon'>");
+                $(".current-icon").attr(
+                    "src",
+                    "http://openweathermap.org/img/wn/" + currentIcon + "@2x.png"
+                );
+                $("#currentTemp").text("Temp: " + currentTemp.toFixed(0) + "°C");
+                $("#currentWind").text("Wind: " + currentWind + " KPH");
+                $("#currentHumidity").text("Humidity: " + currentHumidity + "%");
+                createHistory();
             });
 
             var fiveDayQueryURL =
@@ -119,32 +121,34 @@ function apiCall(geocodeURL) {
             city_lon +
             "&appid=" +
             apiKey;
+
             //weather 5 day forecast api call
             $.ajax({
-            url: fiveDayQueryURL,
-            method: "GET",
+                url: fiveDayQueryURL,
+                method: "GET",
             }).then(function (forecast) {
-            for (let i = 0; i < forecast.list.length; i++) {
-                var forecastDate = moment(forecast.list[i].dt_txt).format("YYYY-MM-DD");
+                for (let i = 0; i < forecast.list.length; i++) {
+                    var forecastDate = moment(forecast.list[i].dt_txt).format("YYYY-MM-DD");
 
-                if (forecastDate > today) {
-                futureForecasts.push(forecast.list[i]);
+                    if (forecastDate > today) {
+                    futureForecasts.push(forecast.list[i]);
+                    }
+
                 }
-            }
-            //reduce the array down to 5 days from 3 hourly
-            for (let j = 1; j <= 5; j++) {
-                todayPlusDays = moment().add(j, "days").format("YYYY-MM-DD");
-                var todayPlusArray = futureForecasts.filter(
-                (item) => moment(item.dt_txt).format("YYYY-MM-DD") === todayPlusDays
-                );
-                todayPlusArray.splice(1, todayPlusArray.length);
+                console.log(futureForecasts);
+                //reduce the array down to 5 days from 3 hourly
+                for (let j = 1; j <= 5; j++) {
+                    todayPlusDays = moment().add(j, "days").format("YYYY-MM-DD");
+                    var todayPlusArray = futureForecasts.filter(
+                    (item) => moment(item.dt_txt).format("YYYY-MM-DD") === todayPlusDays);
+                    todayPlusArray.splice(1, todayPlusArray.length);
 
-                fiveDayArray.push(todayPlusArray);
-                console.log(fiveDayArray);
-            }
-            // console.log(fiveDayArray);
-            // console.log(fiveDayQueryURL);
+                    fiveDayArray.push(todayPlusArray);
+                }
 
+            console.log(fiveDayArray);
+
+  
             for (let k = 0; k < fiveDayArray.length; k++) {
                 var the_date = moment(fiveDayArray[k][0].dt_txt).format("DD-MM-YYYY");
                 var temp = (fiveDayArray[k][0].main.temp - 273.15).toFixed(0);
@@ -152,6 +156,7 @@ function apiCall(geocodeURL) {
                 var humidity = fiveDayArray[k][0].main.humidity;
                 var icon = fiveDayArray[k][0].weather[0].icon;
                 var cardId = $(".card")[k].dataset.day;
+
                 var cardTitle = $(
                 ".card[data-day=" + cardId + "] > .card-body > .card-title"
                 );
@@ -177,11 +182,11 @@ function apiCall(geocodeURL) {
                 cardWind.text("Wind: " + wind + " KPH");
                 cardHumidity.text("Humidity: " + humidity + "%");
 
+
                 /// ISSUE: when searching a new place, forecast values won't change on the page
             }
             });
         } else {
-            console.log("No City");
             $('#no-response').css("display","inline");
             city_array.pop();
             localStorage.setItem("cityArray", JSON.stringify(city_array));

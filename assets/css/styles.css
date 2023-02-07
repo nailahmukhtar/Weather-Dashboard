@@ -20,21 +20,27 @@ h2 {
 
 }
 
-.search-button{
-    background-color: skyblue !important;
+.btn-primary{
+    background-color: blue !important;
     border-radius: 5px !important;
     margin: 10px;
-    width: 300px;
+    width: 270px;
+}
+
+.btn-primary:hover {
+    background-color: white !important;
+    color: black !important;
 }
 
 .search-history {
     background-color: lightgrey;
     border-radius: 5px !important;
-    margin: 10px
+    margin: 10px;
+
 }
 
-.search-history :hover {
-    background-color: darkblue !important;
+.search-history:hover {
+    background-color: darkgray !important;
 }
 
 .form-input {
@@ -51,4 +57,12 @@ img {
 
 #no-response {
     display: none;
+}
+
+.loadDisplay {
+    display: none;
+}
+
+.form-inline {
+    margin-left: -20px;
 }
