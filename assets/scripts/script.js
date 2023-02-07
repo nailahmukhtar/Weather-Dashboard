@@ -3,7 +3,6 @@ var today = moment().format("YYYY-MM-DD");
 var todayPlusDays = moment().add(1, "days").format("YYYY-MM-DD");
 var apiKey = "d55025fbd3d66e451be8af120b4aa003";
 var city_name = "";
-// var city_array = [];
 if (JSON.parse(localStorage.getItem("cityArray")) === null)  {
     var city_array = [];
 } else {
@@ -22,7 +21,6 @@ function search() {
   fiveDayArray.length = 0;
   futureForecasts.length = 0;
 
-  console.log(fiveDayArray);
   $('#no-response').css("display","none");
   var geocodeURL =
     "http://api.openweathermap.org/geo/1.0/direct?q=" +
@@ -37,7 +35,9 @@ $("#search-button").click(function (event) {
   event.preventDefault();
   city_name = $("#search-input").val().trim();
 
-  if (city_array.includes(city_name)) {
+  if (city_name === "") {
+    $('#no-response').css("display","inline");
+  } else if (city_array.includes(city_name)) {
     search();
   } else {
     city_array.push(city_name);
@@ -95,7 +95,6 @@ function apiCall(geocodeURL) {
                 url: dayQueryURL,
                 method: "GET",
             }).then(function (data) {
-                // console.log(data);
                 var currentDate = moment.unix(data.dt).format("DD/MM/YYYY");
                 var currentIcon = data.weather[0].icon;
                 var currentTemp = data.main.temp - 273.15;
@@ -135,7 +134,7 @@ function apiCall(geocodeURL) {
                     }
 
                 }
-                console.log(futureForecasts);
+
                 //reduce the array down to 5 days from 3 hourly
                 for (let j = 1; j <= 5; j++) {
                     todayPlusDays = moment().add(j, "days").format("YYYY-MM-DD");
@@ -146,7 +145,6 @@ function apiCall(geocodeURL) {
                     fiveDayArray.push(todayPlusArray);
                 }
 
-            console.log(fiveDayArray);
 
   
             for (let k = 0; k < fiveDayArray.length; k++) {
@@ -182,8 +180,6 @@ function apiCall(geocodeURL) {
                 cardWind.text("Wind: " + wind + " KPH");
                 cardHumidity.text("Humidity: " + humidity + "%");
 
-
-                /// ISSUE: when searching a new place, forecast values won't change on the page
             }
             });
         } else {
