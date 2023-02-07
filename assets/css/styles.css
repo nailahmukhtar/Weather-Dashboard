@@ -34,7 +34,7 @@ h2 {
 }
 
 .search-history :hover {
-    background-color: darkgray;
+    background-color: darkblue !important;
 }
 
 .form-input {
@@ -47,4 +47,8 @@ img {
     height: 70px;
     margin: -15px;
     padding: 10px;
+}
+
+#no-response {
+    display: none;
 }
