@@ -1,16 +1,7 @@
-/* .row {
-    border: solid orange 1px;
+h2 {
+    text-align: justify;
+    margin: 30px;
 }
-
-.container-fluid {
-    border: solid green 1px;
-    width: 100%;
-}
-
-.list-group {
-    border: solid blue 1px;
-
-} */
 
 #today {
     border: solid gray 2px;
@@ -29,8 +20,27 @@
 
 }
 
-.search-button {
-    background-color: skyblue;
+.search-button{
+    background-color: skyblue !important;
+    border-radius: 5px !important;
+    margin: 10px;
+    width: 300px;
+}
+
+.search-history {
+    background-color: lightgrey;
+    border-radius: 5px !important;
+    margin: 10px
+}
+
+.search-history :hover {
+    background-color: darkgray;
+}
+
+.form-input {
+    width: 300px;
+    padding: 10px;
+    margin: 10px;
 }
 
 img {
