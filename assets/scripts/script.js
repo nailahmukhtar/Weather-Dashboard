@@ -23,7 +23,7 @@ function search() {
 
   $('#no-response').css("display","none");
   var geocodeURL =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
     city_name +
     "&limit=1&appid=" +
     apiKey;
@@ -83,7 +83,7 @@ function apiCall(geocodeURL) {
             city_lon = geoResponse[0].lon;
 
             var dayQueryURL =
-            "http://api.openweathermap.org/data/2.5/weather?lat=" +
+            "https://api.openweathermap.org/data/2.5/weather?lat=" +
             city_lat +
             "&lon=" +
             city_lon +
@@ -105,7 +105,7 @@ function apiCall(geocodeURL) {
                 $("#cityName").append("<img class='current-icon'>");
                 $(".current-icon").attr(
                     "src",
-                    "http://openweathermap.org/img/wn/" + currentIcon + "@2x.png"
+                    "https://openweathermap.org/img/wn/" + currentIcon + "@2x.png"
                 );
                 $("#currentTemp").text("Temp: " + currentTemp.toFixed(0) + "°C");
                 $("#currentWind").text("Wind: " + currentWind + " KPH");
@@ -114,7 +114,7 @@ function apiCall(geocodeURL) {
             });
 
             var fiveDayQueryURL =
-            "http://api.openweathermap.org/data/2.5/forecast?lat=" +
+            "https://api.openweathermap.org/data/2.5/forecast?lat=" +
             city_lat +
             "&lon=" +
             city_lon +
@@ -174,7 +174,7 @@ function apiCall(geocodeURL) {
                 cardTitle.text(the_date);
                 cardIcon.attr(
                 "src",
-                "http://openweathermap.org/img/wn/" + icon + "@2x.png"
+                "https://openweathermap.org/img/wn/" + icon + "@2x.png"
                 );
                 cardTemp.text("Temp: " + temp + "°C");
                 cardWind.text("Wind: " + wind + " KPH");
